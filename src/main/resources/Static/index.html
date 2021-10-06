@@ -38,7 +38,7 @@
 
     </style>
 </head>
-<body>
+<body onload="app.init()">
     <div class="container">
         <div>
         <div class="row">
@@ -75,10 +75,13 @@
             <div class="col align-self-end">
                 <h5 id="Current-blueprint">Current blueprint:</h5>
                 <canvas id = "dibujar" width="500" height="500" style="border:1px solid #000000;"></canvas>
+                <button type="button" onclick="app.saveBlueprint()"> Save/Update </button>
             </div>
+
         </div>
 
+        </div>
     </div>
 
-</body>
+    </body>
 </html>
