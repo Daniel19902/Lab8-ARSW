@@ -16,7 +16,7 @@ var apiclient = (function (){
 
 
         getBlueprintsByAuthor: function(author, callback) {
-            $.get("/blueprints/"+author, function (data){
+            return $.get("/blueprints/"+author, function (data){
                 console.log(data);
                 callback(null,data);
             }).fail(function (){

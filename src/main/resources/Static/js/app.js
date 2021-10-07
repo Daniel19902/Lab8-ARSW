@@ -3,9 +3,9 @@ var app = ( function () {
     //let api = apimock;
     let api = apiclient;
     let nameAuthor = "";
-    let nameBluepoint;
+    let nameBluepoint = "";
     let listaNombres = [];
-    let totalPoints;
+    let totalPoints = 0;
     let x = 0;
     let y = 0;
     let points = [];
@@ -32,6 +32,7 @@ var app = ( function () {
             api.getBlueprintsByNameAndAuthor(name,author, function (error, data){
                 points = data.points;
                 app.drawPoints();
+                $("#Current-blueprint").html("Current blueprint: "+name);
           });
         },
 
@@ -67,29 +68,30 @@ var app = ( function () {
             $("#table-title").html(nameAuthor+"'s blueprints");
             $("#tbody-table").html(html);
             $("#user-points").html("Total user points: " + totalPoints);
-
         },
 
         getBlueprintsByAuthor: function (author){
-            console.log(author);
-            api.getBlueprintsByAuthor(author, function (error, mockData) {
-                console.log(author);
+            api.getBlueprintsByAuthor(author, function (error, mockData){
+                app.sumarPoints(mockData);
                 listaNombres = mockData.map(function (blueprint) {
                     return {
                         name: blueprint.name,
                         points: blueprint.points.length
                     };
                 });
-                if (listaNombres.length > 1) {
-                    totalPoints = listaNombres.reduce(function (anterior, actual) {
-                        return anterior.points + actual.points;
-                    });
-                }else {
-                    totalPoints = listaNombres[0].points;
-                }
                 app.crearTabla();
             });
         },
+
+        sumarPoints : function (mockData){
+            totalPoints = 0;
+            for(let i = 0 ; i < mockData.length; i++){
+                totalPoints += mockData[i].points.length;
+            }
+            console.log(totalPoints);
+        },
+
+
 
         drawPoints: function (){
             let canvas = $("#dibujar")[0];
@@ -101,7 +103,6 @@ var app = ( function () {
                 canvas2d.lineTo(points[i].x,points[i].y);
                 canvas2d.stroke();
             }
-            $("#Current-blueprint").html("Current blueprint: "+name);
         },
 
         saveBlueprint : function (){
@@ -111,10 +112,7 @@ var app = ( function () {
         },
 
         crearBlueprint : function (name){
-            let canvas = $("#dibujar")[0];
-            let canvas2d = canvas.getContext("2d");
-            canvas2d.clearRect(0,0,canvas.width,canvas.height);
-            canvas2d.beginPath();
+            this.limpiarCanvas();
 
             let blueprint = {
 
@@ -132,13 +130,17 @@ var app = ( function () {
         deleteBlueprint : function (){
             if (nameAuthor != ""){
                 api.deleteBlueprint(nameAuthor, nameBluepoint).then(function (){
-                    let canvas = $("#dibujar")[0];
-                    let canvas2d = canvas.getContext("2d");
-                    canvas2d.clearRect(0,0,canvas.width,canvas.height);
-                    canvas2d.beginPath();
+                    app.limpiarCanvas();
                     app.getBlueprintsByAuthor(nameAuthor);
                 });
             }
+        },
+
+        limpiarCanvas: function (){
+            let canvas = $("#dibujar")[0];
+            let canvas2d = canvas.getContext("2d");
+            canvas2d.clearRect(0,0,canvas.width,canvas.height);
+            canvas2d.beginPath();
         }
     };
 })();
