@@ -73,15 +73,13 @@
                 <h5 id="user-points">Total user points:</h5>
             </div>
             <div class="col align-self-end">
+                <input type="text" class="form-control" id = "crearBlueprint" placeholder="Name del author">
+                <button type="button" onclick="app.crearBlueprint($('#crearBlueprint').val())"> Crear Blueprint </button>
                 <h5 id="Current-blueprint">Current blueprint:</h5>
                 <canvas id = "dibujar" width="500" height="500" style="border:1px solid #000000;"></canvas>
                 <button type="button" onclick="app.saveBlueprint()"> Save/Update </button>
+                <button type="button" onclick="app.deleteBlueprint()"> Delete </button>
             </div>
 
         </div>
 
-        </div>
-    </div>
-
-    </body>
-</html>

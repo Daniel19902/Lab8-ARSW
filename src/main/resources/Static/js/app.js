@@ -105,7 +105,40 @@ var app = ( function () {
         },
 
         saveBlueprint : function (){
-            api.putPointsBlueprints(nameAuthor,nameBluepoint,points);
+            api.putPointsBlueprints(nameAuthor,nameBluepoint,points).then( function (){
+                app.getBlueprintsByAuthor(nameAuthor);
+            });
+        },
+
+        crearBlueprint : function (name){
+            let canvas = $("#dibujar")[0];
+            let canvas2d = canvas.getContext("2d");
+            canvas2d.clearRect(0,0,canvas.width,canvas.height);
+            canvas2d.beginPath();
+
+            let blueprint = {
+
+                author: nameAuthor,
+                name : name,
+                points : []
+
+            };
+
+            api.postCrearBlueprint(blueprint).then( function (){
+                app.getBlueprintsByAuthor(nameAuthor);
+            });
+        },
+
+        deleteBlueprint : function (){
+            if (nameAuthor != ""){
+                api.deleteBlueprint(nameAuthor, nameBluepoint).then(function (){
+                    let canvas = $("#dibujar")[0];
+                    let canvas2d = canvas.getContext("2d");
+                    canvas2d.clearRect(0,0,canvas.width,canvas.height);
+                    canvas2d.beginPath();
+                    app.getBlueprintsByAuthor(nameAuthor);
+                });
+            }
         }
     };
 })();

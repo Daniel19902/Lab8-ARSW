@@ -4,7 +4,7 @@ var apiclient = (function (){
     return {
 
         putPointsBlueprints : function (author, name, data){
-            $.ajax({
+            return $.ajax({
                 url: "/blueprints/" + author + "/" + name,
                 type: 'PUT',
                 data: JSON.stringify({author:author, name:name, points:data}),
@@ -30,7 +30,29 @@ var apiclient = (function (){
             }).fail(function (){
                 alert("error");
             });
+        },
+
+        postCrearBlueprint : function (blueprint){
+
+            return $.ajax({
+                url: "/blueprints",
+                type: 'POST',
+                data: JSON.stringify(blueprint),
+                contentType: "application/json"
+            }).fail(function (jqXHR, textStatus) {
+                console.log("Error en el PUT: " + jqXHR + " " + textStatus);
+            });
+        },
+
+        deleteBlueprint : function (author, name){
+            return $.ajax({
+                url:"/blueprints/"+author+"/"+name,
+                type: 'DELETE'
+            }).fail(function (jqXHR, textStatus) {
+                console.log("Error en el DELETE: " + jqXHR + " " + textStatus);
+            });
         }
+
     }
 })();
 
